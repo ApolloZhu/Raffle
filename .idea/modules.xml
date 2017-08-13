@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/Lottery.iml" filepath="$PROJECT_DIR$/Lottery.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../io.github.apollozhu/io.github.apollozhu.iml" filepath="$PROJECT_DIR$/../io.github.apollozhu/io.github.apollozhu.iml" />
     </modules>
   </component>
 </project>

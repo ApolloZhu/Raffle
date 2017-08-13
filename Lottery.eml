@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component inherit-compiler-output="true" inheritJdk="true">
+	<output-test url="file://$MODULE_DIR$/out/test/Lottery"/>
+	<exclude-output/>
+	<contentEntry url="file://$MODULE_DIR$"/>
+	<lib name="io.github.apollozhu" scope="COMPILE">
+		<srcroot url="file://$MODULE_DIR$/../io.github.apollozhu/src"/>
+		<srcroot bind="false" url="file://$MODULE_DIR$/../io.github.apollozhu/test"/>
+	</lib>
+	<levels>
+		<level name="KotlinJavaRuntime" value="project"/>
+	</levels>
+</component>
