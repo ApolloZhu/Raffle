@@ -1,5 +1,6 @@
 package io.github.apollozhu.lottery
 
+import io.github.apollozhu.lottery.lottery.LotteryPanel
 import io.github.apollozhu.lottery.settings.LotteryPreferences
 import io.github.apollozhu.lottery.settings.LotterySettingsPanel
 import io.github.apollozhu.lottery.utils.BackgroundMusicPlayer

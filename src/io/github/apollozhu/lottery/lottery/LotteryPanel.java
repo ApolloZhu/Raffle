@@ -1,5 +1,6 @@
-package io.github.apollozhu.lottery;
+package io.github.apollozhu.lottery.lottery;
 
+import io.github.apollozhu.lottery.prize.LotteryPrizeDisplayPanel;
 import io.github.apollozhu.lottery.prize.LotteryPrizeModel;
 import io.github.apollozhu.lottery.settings.LotteryPreferences;
 import io.github.apollozhu.lottery.utils.RandomSelector;
@@ -17,7 +18,6 @@ public class LotteryPanel extends JPanel {
     private JComboBox<LotteryPrizeModel> box = new JComboBox();
     private JButton withdrawButton = new JButton("放弃");
     private JButton nextButton = new JButton("抽奖");
-    private JLabel winnerLabel = new JLabel();
 
     public LotteryPanel() {
         setLayout(new BorderLayout());
@@ -28,9 +28,7 @@ public class LotteryPanel extends JPanel {
         nPanel.add(title);
         nPanel.add(subtitle);
 
-        JPanel cPanel = new JPanel();
-        add(cPanel, BorderLayout.CENTER);
-        cPanel.add(winnerLabel);
+        replaceCenterPanelWith(new LotteryCenterPanel());
 
         JPanel sPanel = new JPanel();
         add(sPanel, BorderLayout.SOUTH);
@@ -62,12 +60,12 @@ public class LotteryPanel extends JPanel {
         subtitle.setForeground(LotteryPreferences.INSTANCE.getSubtitleColor());
         subtitle.setVisible(!subtitle.getText().isEmpty());
 
-        winnerLabel.setFont(winnerLabel.getFont().deriveFont(Font.BOLD, LotteryPreferences.INSTANCE.getWinnerSize()));
-        winnerLabel.setForeground(LotteryPreferences.INSTANCE.getWinnerColor());
-
         nextButton.setEnabled(RandomSelector.INSTANCE.hasNext());
 
+        center.setBackground(LotteryPreferences.INSTANCE.getBackgroundColor());
+
         box.removeAllItems();
+        System.out.println(LotteryPreferences.INSTANCE.getPrizes().length);
         for (LotteryPrizeModel model : LotteryPreferences.INSTANCE.getPrizes()) {
             box.addItem(model);
         }
@@ -75,12 +73,12 @@ public class LotteryPanel extends JPanel {
 
     private String winner = "";
     private LotteryPrizeModel prizeModel;
-    private int total, left;
+    private int left;
 
     public void load(LotteryPrizeModel model) {
+        if (model == null) return;
         prizeModel = model;
-        total = model.getCount();
-        left = total;
+        left = prizeModel.getCount();
         winner = "";
         reloadCandidateList(null);
     }
@@ -89,22 +87,44 @@ public class LotteryPanel extends JPanel {
         stateDidChange(false);
     }
 
+    private boolean isWaiting;
+
     public void next(ActionEvent ignored) {
-        left--;
-        winner = RandomSelector.INSTANCE.next();
-        winnerLabel.setText("恭喜： " + winner);
-        stateDidChange(true);
+        if (!hasNext()) return;
+        if (isWaiting) {
+            isWaiting = false;
+            left--;
+            winner = RandomSelector.INSTANCE.next();
+            replaceCenterPanelWith(new LotteryPrizeDisplayPanel(winner, prizeModel));
+            stateDidChange(true);
+        } else {
+            isWaiting = true;
+            withdrawButton.setEnabled(false);
+            replaceCenterPanelWith(new LotteryRollingPanel());
+        }
     }
 
     public void withdraw(ActionEvent ignored) {
         left++;
         RandomSelector.INSTANCE.add(winner);
-        winnerLabel.setText(winner + " 放弃领奖");
+        replaceCenterPanelWith(new LotteryCenterPanel());
         stateDidChange(false);
     }
 
+    public boolean hasNext() {
+        return RandomSelector.INSTANCE.hasNext() && left > 0;
+    }
+
     private void stateDidChange(boolean isWithdrawButtonEnabled) {
-        nextButton.setEnabled(RandomSelector.INSTANCE.hasNext() && left > 0);
+        nextButton.setEnabled(hasNext());
         withdrawButton.setEnabled(isWithdrawButtonEnabled);
+    }
+
+    private LotteryCenterPanel center;
+
+    private void replaceCenterPanelWith(LotteryCenterPanel panel) {
+        add(panel, BorderLayout.CENTER);
+        if (center != null) remove(center);
+        center = panel;
     }
 }

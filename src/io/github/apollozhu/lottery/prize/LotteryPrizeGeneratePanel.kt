@@ -8,7 +8,7 @@ import javax.swing.*
 import javax.swing.filechooser.FileNameExtensionFilter
 
 
-data class LotteryPrizePanel(val identifier: String) : JPanel() {
+data class LotteryPrizeGeneratePanel(val identifier: String) : JPanel() {
     private val name = JTextField()
     private val count = JTextField()
     private val imagePathButton = AZJButton("选择图片")

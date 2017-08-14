@@ -22,7 +22,7 @@ object RandomSelector : AZListenable<ChangeListener> {
         loadList()
     }
 
-    private var list: MutableList<String> = ArrayList()
+    var list: MutableList<String> = ArrayList()
 
     private var currentPath = ""
 
@@ -45,20 +45,11 @@ object RandomSelector : AZListenable<ChangeListener> {
         forEachListener { it.stateChanged(null) }
     }
 
-    fun add(it: String) {
-        list.add(it)
-    }
+    fun add(it: String) = list.add(it)
 
-    fun next(): String? {
-        if (hasNext()) {
-            val index = (Math.random() * list.size).toInt()
-            return list.removeAt(index)
-        } else {
-            return null
-        }
-    }
+    fun hasNext(): Boolean = list.size > 0
 
-    fun hasNext(): Boolean {
-        return list.size > 0
-    }
+    fun nextIndex(): Int = (Math.random() * list.size).toInt()
+
+    fun next(): String? = if (hasNext()) list.removeAt(nextIndex()) else null
 }

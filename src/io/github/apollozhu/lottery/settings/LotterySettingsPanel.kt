@@ -1,12 +1,12 @@
 package io.github.apollozhu.lottery.settings
 
-import io.github.apollozhu.lottery.prize.LotteryPrizeManagerPanel
+import io.github.apollozhu.lottery.prize.LotteryPrizeGeneratePanelManagerPanel
 import java.awt.BorderLayout
 import javax.swing.JPanel
 
 class LotterySettingsPanel : JPanel() {
-    private val basic = LotteryBasicSettingsPanel()
-    private val prize = LotteryPrizeManagerPanel()
+    private val basic = LotterySettingsBasicSettingsPanel()
+    private val prize = LotteryPrizeGeneratePanelManagerPanel()
 
     init {
         layout = BorderLayout()
@@ -17,8 +17,9 @@ class LotterySettingsPanel : JPanel() {
     override fun setVisible(aFlag: Boolean) {
         super.setVisible(aFlag)
         if (aFlag) basic.loadPreferences() else {
-            LotteryPreferences.prizes = prize.prizes
             basic.savePreferences()
+            LotteryPreferences.prizes = prize.prizes
+            LotteryPreferences.fireUpdate()
         }
     }
 }

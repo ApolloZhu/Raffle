@@ -9,10 +9,10 @@ import javax.swing.JButton
 import javax.swing.JLabel
 import javax.swing.JPanel
 
-class LotteryPrizeManagerPanel : JPanel() {
+class LotteryPrizeGeneratePanelManagerPanel : JPanel() {
 
     private val cardLayout = CardLayout()
-    private val panelList = ArrayList<LotteryPrizePanel>()
+    private val panelList = ArrayList<LotteryPrizeGeneratePanel>()
     private val panelsContainer = JPanel()
     private var curIndex = 0
     private var nextId = Integer.MIN_VALUE
@@ -72,7 +72,7 @@ class LotteryPrizeManagerPanel : JPanel() {
 
     // FIXME: Not human friendly
     private fun addPrize(ignored: ActionEvent? = null) {
-        val newPanel = LotteryPrizePanel(nextId++.toString() + "")
+        val newPanel = LotteryPrizeGeneratePanel(nextId++.toString() + "")
         panelList.add(curIndex, newPanel)
         panelsContainer.add(newPanel, newPanel.identifier, curIndex)
         if (curIndex + 1 < panelList.size) {

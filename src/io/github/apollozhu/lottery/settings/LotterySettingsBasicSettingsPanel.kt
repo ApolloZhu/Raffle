@@ -7,7 +7,7 @@ import java.awt.Font
 import javax.swing.*
 import javax.swing.filechooser.FileNameExtensionFilter
 
-class LotteryBasicSettingsPanel : JPanel() {
+class LotterySettingsBasicSettingsPanel : JPanel() {
 
     private val titleTextField = JTextField()
     private val titleSizeTextField = JTextField()
@@ -146,7 +146,5 @@ class LotteryBasicSettingsPanel : JPanel() {
         LotteryPreferences.listPath = listButton.text
         LotteryPreferences.winnerSize = winnerSizeTextField.text.toFloatOrNull() ?: LotteryPreferences.winnerSize
         LotteryPreferences.winnerColor = winnerColorButton.background
-
-        LotteryPreferences.fireUpdate()
     }
 }

@@ -15,7 +15,7 @@ object LotteryPreferences : AZListenable<PreferenceChangeListener> {
     override fun getListenerList() = list
     internal fun fireUpdate() {
         forEachListener { it.preferenceChange(null) }
-        print(prizes)
+        println(prizes)
     }
 
     var title: String
