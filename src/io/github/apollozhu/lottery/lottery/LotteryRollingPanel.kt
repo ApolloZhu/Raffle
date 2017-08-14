@@ -5,7 +5,7 @@ import javax.swing.Timer
 
 class LotteryRollingPanel : LotteryCenterPanel() {
     private val timer = Timer(30) {
-        label.text = RandomSelector.list[RandomSelector.nextIndex()]
+        label.text = RandomSelector.list[RandomSelector.randomIndex()]
         checkState()
     }
 

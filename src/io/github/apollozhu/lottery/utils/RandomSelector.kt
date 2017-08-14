@@ -49,7 +49,7 @@ object RandomSelector : AZListenable<ChangeListener> {
 
     fun hasNext(): Boolean = list.size > 0
 
-    fun nextIndex(): Int = (Math.random() * list.size).toInt()
+    fun randomIndex(): Int = (Math.random() * list.size).toInt()
 
-    fun next(): String? = if (hasNext()) list.removeAt(nextIndex()) else null
+    fun next(): String? = if (hasNext()) list.removeAt(randomIndex()) else null
 }

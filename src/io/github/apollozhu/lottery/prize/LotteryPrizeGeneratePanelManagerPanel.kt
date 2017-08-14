@@ -75,9 +75,7 @@ class LotteryPrizeGeneratePanelManagerPanel : JPanel() {
         indexShifted()
     }
 
-    internal fun hasRemovablePrize(): Boolean {
-        return panelList.size > 1
-    }
+    internal fun hasRemovablePrize() = panelList.size > 1
 
     private fun removePrize() {
         panelList.removeAt(curIndex)

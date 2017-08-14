@@ -1,5 +1,7 @@
 package io.github.apollozhu.lottery.lottery
 
+import io.github.apollozhu.lottery.prize.LotteryPrizeDisplayTextOnlyPanel
+import io.github.apollozhu.lottery.prize.LotteryPrizeDisplayWithImagePanel
 import io.github.apollozhu.lottery.prize.LotteryPrizeModel
 import java.awt.CardLayout
 import javax.swing.JPanel

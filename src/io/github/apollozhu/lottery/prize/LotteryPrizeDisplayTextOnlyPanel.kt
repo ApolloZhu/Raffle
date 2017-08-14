@@ -1,6 +1,6 @@
-package io.github.apollozhu.lottery.lottery
+package io.github.apollozhu.lottery.prize
 
-import io.github.apollozhu.lottery.prize.LotteryPrizeModel
+import io.github.apollozhu.lottery.lottery.LotteryCenterPanel
 
 open class LotteryPrizeDisplayTextOnlyPanel : LotteryCenterPanel() {
     open fun displayFor(name: String, prizeModel: LotteryPrizeModel) {
