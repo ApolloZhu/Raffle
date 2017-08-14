@@ -3,10 +3,8 @@ package io.github.apollozhu.lottery.prize
 import io.github.apollozhu.lottery.utils.AZGridBagConstraints
 import io.github.apollozhu.swing.AZJButton
 import java.awt.GridBagLayout
-import javax.swing.JFileChooser
-import javax.swing.JLabel
-import javax.swing.JPanel
-import javax.swing.JTextField
+import java.awt.Image
+import javax.swing.*
 import javax.swing.filechooser.FileNameExtensionFilter
 
 
@@ -31,7 +29,7 @@ data class LotteryPrizePanel(val identifier: String) : JPanel() {
             chooser.fileFilter = FileNameExtensionFilter("Images", "jpg", "gif", "png")
             if (chooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
                 imagePathButton.text = chooser.selectedFile.path
-//                imagePathButton.icon = ImageIcon(ImageIcon(imagePathButton.text).image.getScaledInstance(imagePathButton.width, imagePathButton.height, Image.SCALE_DEFAULT))
+                imagePathButton.icon = ImageIcon(ImageIcon(imagePathButton.text).image.getScaledInstance(imagePathButton.width, imagePathButton.height, Image.SCALE_DEFAULT))
             }
         }
     }
@@ -42,17 +40,17 @@ data class LotteryPrizePanel(val identifier: String) : JPanel() {
     val prizeCount: String
         get() = count.text.trim()
 
-    val unsafePrizeCount: Int
-        get() = Integer.parseUnsignedInt(prizeCount)
+    val unsafePrizeCount: Int?
+        get() = prizeCount.toIntOrNull()
 
     val prizeImagePath: String
         get() = imagePathButton.text.trim()
 
     val isDataValid: Boolean
         get() = prizeName.isNotBlank()
-                && prizeCount.matches("\\d+".toRegex())
-                && unsafePrizeCount > 0
+                && unsafePrizeCount != null
+                && unsafePrizeCount!! > 0
 
     val model: LotteryPrizeModel?
-        get() = if (isDataValid) LotteryPrizeModel(prizeName, unsafePrizeCount, prizeImagePath) else null
+        get() = if (isDataValid) LotteryPrizeModel(prizeName, unsafePrizeCount!!, prizeImagePath) else null
 }

@@ -36,9 +36,8 @@ public class LotteryPanel extends JPanel {
         add(sPanel, BorderLayout.SOUTH);
 
         sPanel.add(box);
-        box.addActionListener(l -> {
-            load((LotteryPrizeModel) box.getSelectedItem());
-        });
+        box.addItemListener(ignored -> load((LotteryPrizeModel) box.getSelectedItem()));
+        box.setRenderer((list, model, index, isSelected, cellHasFocus) -> new JLabel(model == null ? "无效奖项" : model.getName()));
 
         withdrawButton.addActionListener(this::withdraw);
         withdrawButton.setEnabled(false);
@@ -53,7 +52,7 @@ public class LotteryPanel extends JPanel {
         RandomSelector.INSTANCE.addListener(this::reloadCandidateList);
     }
 
-    public void loadPreferences(PreferenceChangeEvent e) {
+    public void loadPreferences(PreferenceChangeEvent ignored) {
         title.setText(LotteryPreferences.INSTANCE.getTitle());
         title.setFont(title.getFont().deriveFont(LotteryPreferences.INSTANCE.getTitleSize()));
         title.setForeground(LotteryPreferences.INSTANCE.getTitleColor());

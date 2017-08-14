@@ -1,7 +1,5 @@
-package io.github.apollozhu.lottery.settings
+package io.github.apollozhu.lottery.prize
 
-import io.github.apollozhu.lottery.prize.LotteryPrizeModel
-import io.github.apollozhu.lottery.prize.LotteryPrizePanel
 import java.awt.BorderLayout
 import java.awt.CardLayout
 import java.awt.Font

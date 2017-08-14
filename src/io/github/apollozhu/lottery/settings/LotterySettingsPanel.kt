@@ -1,5 +1,6 @@
 package io.github.apollozhu.lottery.settings
 
+import io.github.apollozhu.lottery.prize.LotteryPrizeManagerPanel
 import java.awt.BorderLayout
 import javax.swing.JPanel
 
@@ -16,8 +17,8 @@ class LotterySettingsPanel : JPanel() {
     override fun setVisible(aFlag: Boolean) {
         super.setVisible(aFlag)
         if (aFlag) basic.loadPreferences() else {
-            basic.savePreferences()
             LotteryPreferences.prizes = prize.prizes
+            basic.savePreferences()
         }
     }
 }
