@@ -3,14 +3,12 @@ package io.github.apollozhu.lottery.prize
 import java.awt.BorderLayout
 import java.awt.CardLayout
 import java.awt.Font
-import java.awt.event.ActionEvent
 import java.util.*
 import javax.swing.JButton
 import javax.swing.JLabel
 import javax.swing.JPanel
 
 class LotteryPrizeGeneratePanelManagerPanel : JPanel() {
-
     private val cardLayout = CardLayout()
     private val panelList = ArrayList<LotteryPrizeGeneratePanel>()
     private val panelsContainer = JPanel()
@@ -35,12 +33,12 @@ class LotteryPrizeGeneratePanelManagerPanel : JPanel() {
         val controls = JPanel()
         add(controls, BorderLayout.SOUTH)
         controls.add(deleteButton)
-        deleteButton.addActionListener { removePrize(it) }
+        deleteButton.addActionListener { removePrize() }
         deleteButton.isEnabled = hasRemovablePrize()
 
         val button = JButton("添加")
         controls.add(button)
-        button.addActionListener { addPrize(it) }
+        button.addActionListener { addPrize() }
 
         controls.add(previousButton)
         previousButton.addActionListener {
@@ -70,14 +68,10 @@ class LotteryPrizeGeneratePanelManagerPanel : JPanel() {
         label.text = "奖项设置 ${curIndex + 1}/${panelList.size} ${if (prizeName.isBlank()) "" else " - $prizeName"}"
     }
 
-    // FIXME: Not human friendly
-    private fun addPrize(ignored: ActionEvent? = null) {
+    private fun addPrize() {
         val newPanel = LotteryPrizeGeneratePanel(nextId++.toString() + "")
         panelList.add(curIndex, newPanel)
         panelsContainer.add(newPanel, newPanel.identifier, curIndex)
-        if (curIndex + 1 < panelList.size) {
-            curIndex += 1
-        }
         indexShifted()
     }
 
@@ -85,13 +79,9 @@ class LotteryPrizeGeneratePanelManagerPanel : JPanel() {
         return panelList.size > 1
     }
 
-    // FIXME: Not human friendly
-    private fun removePrize(ignored: ActionEvent? = null) {
-        if (curIndex == panelList.size - 1) {
-            cardLayout.show(panelsContainer, panelList[--curIndex].identifier)
-        }
-        panelList.removeAt(++curIndex)
-        panelsContainer.remove(curIndex--)
+    private fun removePrize() {
+        panelList.removeAt(curIndex)
+        panelsContainer.remove(curIndex)
         indexShifted()
     }
 

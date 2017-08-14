@@ -1,8 +1,8 @@
 package io.github.apollozhu.lottery.prize
 
-import javax.swing.ImageIcon
+import java.awt.Image
+import javax.swing.Icon
 
-data class LotteryPrizeModel(val name: String, val count: Int, val imagePath: String) {
-    val imageIcon = ImageIcon(imagePath)
-    val image = imageIcon.image
+data class LotteryPrizeModel(val name: String, val count: Int, val image: Image?) {
+    val hasImage = image != null
 }

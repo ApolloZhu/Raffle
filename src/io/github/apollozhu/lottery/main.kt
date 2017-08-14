@@ -11,19 +11,20 @@ import javax.swing.JFrame
 import javax.swing.JTabbedPane
 
 
+private val settingsPanel = LotterySettingsPanel()
+val frame = JFrame("抽奖软件（开源代码 github.com/ApolloZhu/Lottery）- 朱智语个人作品")
+val tabbedPane = JTabbedPane()
+
 fun main(args: Array<String>) {
-    val tabbedPane = JTabbedPane()
 
     val lotteryPanel = LotteryPanel()
     tabbedPane.addTab("抽奖", lotteryPanel)
     LotteryPreferences.addListener { setBackgroundRecursively(container = lotteryPanel) }
     setBackgroundRecursively(container = lotteryPanel)
 
-    val settingsPanel = LotterySettingsPanel()
     tabbedPane.addTab("设置", settingsPanel)
     tabbedPane.selectedIndex = 1
 
-    val frame = JFrame("抽奖软件（开源代码 github.com/ApolloZhu/Lottery）")
     frame.contentPane = tabbedPane
     frame.bounds = GraphicsEnvironment.getLocalGraphicsEnvironment().maximumWindowBounds
     frame.defaultCloseOperation = JFrame.EXIT_ON_CLOSE

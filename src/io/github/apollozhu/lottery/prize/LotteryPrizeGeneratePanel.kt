@@ -12,6 +12,7 @@ data class LotteryPrizeGeneratePanel(val identifier: String) : JPanel() {
     private val name = JTextField()
     private val count = JTextField()
     private val imagePathButton = AZJButton("选择图片")
+    private var prizeImage: Image? = null
 
     init {
         layout = GridBagLayout()
@@ -21,7 +22,6 @@ data class LotteryPrizeGeneratePanel(val identifier: String) : JPanel() {
         add(count, AZGridBagConstraints(1, 1, weightx = 100.0))
         add(JLabel("图片"), AZGridBagConstraints(0, 2, gridheight = 2, weighty = 100.0))
         add(imagePathButton, AZGridBagConstraints(1, 2, gridheight = 2, weightx = 100.0, weighty = 100.0))
-        imagePathButton.preferredSize.height = name.maximumSize.height
         imagePathButton.addActionListener {
             val chooser = JFileChooser()
             chooser.dialogTitle = "选择${if (name.text.isBlank()) "奖品" else name.text.trim()}图片"
@@ -29,7 +29,8 @@ data class LotteryPrizeGeneratePanel(val identifier: String) : JPanel() {
             chooser.fileFilter = FileNameExtensionFilter("Images", "jpg", "jpeg", "gif", "png")
             if (chooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
                 imagePathButton.text = chooser.selectedFile.path
-                imagePathButton.icon = ImageIcon(ImageIcon(imagePathButton.text).image.getScaledInstance(imagePathButton.width, imagePathButton.height, Image.SCALE_DEFAULT))
+                prizeImage = ImageIcon(imagePathButton.text).image.getScaledInstance(imagePathButton.width, imagePathButton.height, Image.SCALE_DEFAULT)
+                imagePathButton.icon = ImageIcon(prizeImage)
             }
         }
     }
@@ -52,5 +53,5 @@ data class LotteryPrizeGeneratePanel(val identifier: String) : JPanel() {
                 && unsafePrizeCount!! > 0
 
     val model: LotteryPrizeModel?
-        get() = if (isDataValid) LotteryPrizeModel(prizeName, unsafePrizeCount!!, prizeImagePath) else null
+        get() = if (isDataValid) LotteryPrizeModel(prizeName, unsafePrizeCount!!, prizeImage) else null
 }
