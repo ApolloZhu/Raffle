@@ -70,7 +70,7 @@ class LotterySettingsBasicSettingsPanel : JPanel(), PreferenceLoading {
             val chooser = JFileChooser(backgroundMusicPathButton.text)
             chooser.dialogTitle = "选择背景音乐"
             chooser.dialogType = JFileChooser.FILES_ONLY
-            chooser.fileFilter = FileNameExtensionFilter("Music", "wav")
+            chooser.fileFilter = FileNameExtensionFilter("Media (aif/aiff/fxm/flv/m3u8/mp3/mp4/m4a/m4v/wav)", "aif", "aiff", "fxm", "flv", "m3u8", "mp3", "mp4", "m4a", "m4v", "wav")
             when (chooser.showOpenDialog(this)) {
                 JFileChooser.APPROVE_OPTION -> backgroundMusicPathButton.text = chooser.selectedFile.path
                 else -> backgroundMusicPathButton.text = ""

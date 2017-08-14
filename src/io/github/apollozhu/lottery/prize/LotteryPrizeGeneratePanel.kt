@@ -1,5 +1,6 @@
 package io.github.apollozhu.lottery.prize
 
+import io.github.apollozhu.lottery.imageAspectFit
 import io.github.apollozhu.lottery.utils.AZGridBagConstraints
 import io.github.apollozhu.swing.AZJButton
 import java.awt.GridBagLayout
@@ -26,11 +27,11 @@ data class LotteryPrizeGeneratePanel(val identifier: String) : JPanel() {
             val chooser = JFileChooser()
             chooser.dialogTitle = "选择${if (hasPrizeName()) prizeName else "奖品"}图片"
             chooser.dialogType = JFileChooser.FILES_ONLY
-            chooser.fileFilter = FileNameExtensionFilter("Images", "jpg", "jpeg", "gif", "png")
+            chooser.fileFilter = FileNameExtensionFilter("Images (jpg/jpeg/gif/png)", "jpg", "jpeg", "gif", "png")
             if (chooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
                 imagePathButton.text = chooser.selectedFile.path
                 prizeImage = ImageIcon(imagePathButton.text).image
-                imagePathButton.icon = ImageIcon(prizeImage!!.getScaledInstance(imagePathButton.width, imagePathButton.height, Image.SCALE_DEFAULT))
+                imagePathButton.icon = ImageIcon(imageAspectFit(prizeImage!!, imagePathButton.width - 50, imagePathButton.height - 50))
             }
         }
     }

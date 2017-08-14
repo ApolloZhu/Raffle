@@ -7,6 +7,9 @@ import io.github.apollozhu.lottery.utils.BackgroundMusicPlayer
 import java.awt.Color
 import java.awt.Container
 import java.awt.GraphicsEnvironment
+import java.awt.Image
+import javax.swing.ImageIcon
+import javax.swing.JButton
 import javax.swing.JFrame
 import javax.swing.JTabbedPane
 
@@ -42,4 +45,12 @@ fun setBackgroundRecursively(color: Color = LotteryPreferences.backgroundColor, 
             setBackgroundRecursively(color, component)
         }
     }
+}
+
+fun imageAspectFit(image: Image, width: Int, height: Int): Image {
+    val icon = ImageIcon(image)
+    val isLongThin = icon.iconWidth < icon.iconHeight
+    val toWidth = if (isLongThin) -1 else width
+    val toHeight = if (isLongThin) height else -1
+    return image.getScaledInstance(toWidth, toHeight, Image.SCALE_DEFAULT)
 }

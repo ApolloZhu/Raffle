@@ -1,41 +1,45 @@
 package io.github.apollozhu.lottery.utils
 
 import io.github.apollozhu.lottery.settings.LotteryPreferences
+import javafx.application.Platform
+import javafx.embed.swing.JFXPanel
+import javafx.scene.media.Media
+import javafx.scene.media.MediaPlayer
 import java.io.File
-import javax.sound.sampled.AudioSystem
-import javax.sound.sampled.Clip
 
 object BackgroundMusicPlayer {
+    // IMPORTANT: Magic, Do NOT Touch
+    val panel = JFXPanel()
+    // END-IMPORTANT
+
     init {
         LotteryPreferences.addListener { play() }
         play()
     }
 
-    private var clip = AudioSystem.getClip()
-    private var currentPath = ""
+    var currentPlayer: MediaPlayer? = null
 
     fun stop() {
-        try {
-            clip.close()
-        } catch (ignored: Exception) {
-        }
+        currentPlayer?.stop()
     }
 
+    private var currentPath = ""
+
     fun play(path: String = LotteryPreferences.backgroundMusicPath) {
-        if (path == currentPath) {
-            return
-        }
-        currentPath = path
-        stop()
-        Thread {
-            try {
-                clip = AudioSystem.getClip()
-                AudioSystem.getAudioInputStream(File(path)).use { stream ->
-                    clip.open(stream)
-                    clip.loop(Clip.LOOP_CONTINUOUSLY)
+        Platform.runLater {
+            if (path != currentPath) {
+                currentPath = path
+                try {
+                    val media = Media(File(path).toURI().toString())
+                    val player = MediaPlayer(media)
+                    player.cycleCount = MediaPlayer.INDEFINITE
+                    player.play()
+                    stop()
+                    currentPlayer = player
+                } catch (_: Exception) {
                 }
-            } catch (ignored: Exception) {
             }
-        }.start()
+        }
+
     }
 }
