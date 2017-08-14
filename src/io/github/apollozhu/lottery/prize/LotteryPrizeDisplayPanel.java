@@ -6,20 +6,18 @@ import javax.swing.*;
 import java.awt.*;
 
 public class LotteryPrizeDisplayPanel extends LotteryCenterPanel {
-    @Override
-    protected Object constraintForLabel() {
-        return BorderLayout.NORTH;
-    }
 
-    private BorderLayout layout = new BorderLayout();
+    private JLabel imageLabel;
 
     @Override
-    public void setLayout(LayoutManager mgr) {
-        super.setLayout(layout);
+    protected void addLabel() {
+        setLayout(new BorderLayout());
+        add(label, BorderLayout.NORTH);
+        add(imageLabel = new JLabel(), BorderLayout.CENTER);
     }
 
-    public LotteryPrizeDisplayPanel(String name, LotteryPrizeModel prizeModel) {
-        JLabel image = new JLabel(prizeModel.getImageIcon());
-        add(image, BorderLayout.CENTER);
+    public void displayFor(String name, LotteryPrizeModel prizeModel) {
+        label.setText("恭喜 " + name + " 获得 " + prizeModel.getName());
+        imageLabel.setIcon(new ImageIcon(prizeModel.getImage().getScaledInstance(imageLabel.getWidth(), imageLabel.getHeight(), Image.SCALE_DEFAULT)));
     }
 }

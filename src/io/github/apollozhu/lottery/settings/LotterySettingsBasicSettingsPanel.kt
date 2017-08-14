@@ -1,13 +1,15 @@
 package io.github.apollozhu.lottery.settings
 
 import SpringUtilities
+import io.github.apollozhu.lottery.utils.PreferenceLoading
 import io.github.apollozhu.swing.AZJButton
 import java.awt.BorderLayout
 import java.awt.Font
+import java.util.prefs.PreferenceChangeEvent
 import javax.swing.*
 import javax.swing.filechooser.FileNameExtensionFilter
 
-class LotterySettingsBasicSettingsPanel : JPanel() {
+class LotterySettingsBasicSettingsPanel : JPanel(), PreferenceLoading {
 
     private val titleTextField = JTextField()
     private val titleSizeTextField = JTextField()
@@ -112,7 +114,7 @@ class LotterySettingsBasicSettingsPanel : JPanel() {
         loadPreferences()
     }
 
-    fun loadPreferences() {
+    override fun loadPreferences(ignored: PreferenceChangeEvent?) {
         titleTextField.text = LotteryPreferences.title
         titleSizeTextField.text = "${LotteryPreferences.titleSize}"
         titleColorButton.background = LotteryPreferences.titleColor

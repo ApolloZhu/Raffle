@@ -26,7 +26,7 @@ data class LotteryPrizeGeneratePanel(val identifier: String) : JPanel() {
             val chooser = JFileChooser()
             chooser.dialogTitle = "选择${if (name.text.isBlank()) "奖品" else name.text.trim()}图片"
             chooser.dialogType = JFileChooser.FILES_ONLY
-            chooser.fileFilter = FileNameExtensionFilter("Images", "jpg", "gif", "png")
+            chooser.fileFilter = FileNameExtensionFilter("Images", "jpg", "jpeg", "gif", "png")
             if (chooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
                 imagePathButton.text = chooser.selectedFile.path
                 imagePathButton.icon = ImageIcon(ImageIcon(imagePathButton.text).image.getScaledInstance(imagePathButton.width, imagePathButton.height, Image.SCALE_DEFAULT))
