@@ -1,12 +1,13 @@
-package io.github.apollozhu.lottery
+package io.github.apollozhu.lottery.settings
 
 import SpringUtilities
 import io.github.apollozhu.swing.AZJButton
 import java.awt.BorderLayout
+import java.awt.Font
 import javax.swing.*
 import javax.swing.filechooser.FileNameExtensionFilter
 
-class LotterySettingsPanel : JPanel() {
+class LotteryBasicSettingsPanel : JPanel() {
 
     private val titleTextField = JTextField()
     private val titleSizeTextField = JTextField()
@@ -25,12 +26,12 @@ class LotterySettingsPanel : JPanel() {
     init {
         layout = BorderLayout()
 
-        val nPanel = JPanel()
-        add(nPanel, BorderLayout.NORTH)
-        nPanel.layout = BorderLayout()
+        val promptLabel = JLabel("基本设置")
+        add(promptLabel, BorderLayout.NORTH)
+        promptLabel.font = promptLabel.font.deriveFont(Font.BOLD, 35f)
 
         val uiSettingsPanel = JPanel()
-        nPanel.add(uiSettingsPanel, BorderLayout.CENTER)
+        add(uiSettingsPanel, BorderLayout.CENTER)
         uiSettingsPanel.layout = SpringLayout()
 
         var label = JLabel("标题", SwingConstants.RIGHT)
@@ -86,7 +87,7 @@ class LotterySettingsPanel : JPanel() {
         SpringUtilities.makeCompactGrid(uiSettingsPanel, 3, 6, 8, 8, 8, 8)
 
         val candidateListPanel = JPanel()
-        nPanel.add(candidateListPanel, BorderLayout.SOUTH)
+        add(candidateListPanel, BorderLayout.SOUTH)
         candidateListPanel.layout = SpringLayout()
         label = JLabel("人员名单", SwingConstants.RIGHT)
         candidateListPanel.add(label)
@@ -101,7 +102,7 @@ class LotterySettingsPanel : JPanel() {
         candidateListPanel.add(listButton)
         SpringUtilities.makeCompactGrid(candidateListPanel, 1, 2, 8, 8, 8, 8)
 
-        add(PrizePanel(), BorderLayout.CENTER)
+        loadPreferences()
     }
 
     fun loadPreferences() {
@@ -136,10 +137,5 @@ class LotterySettingsPanel : JPanel() {
         LotteryPreferences.listPath = listButton.text
 
         LotteryPreferences.fireUpdate()
-    }
-
-    override fun setVisible(aFlag: Boolean) {
-        super.setVisible(aFlag)
-        if (aFlag) loadPreferences() else savePreferences()
     }
 }

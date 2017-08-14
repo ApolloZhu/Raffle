@@ -1,6 +1,10 @@
 package io.github.apollozhu.lottery;
 
+import io.github.apollozhu.lottery.settings.LotteryPreferences;
+import io.github.apollozhu.lottery.utils.RandomSelector;
+
 import javax.swing.*;
+import javax.swing.event.ChangeEvent;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.util.prefs.PreferenceChangeEvent;
@@ -33,6 +37,8 @@ public class LotteryPanel extends JPanel {
 
         LotteryPreferences.INSTANCE.addListener(this::loadPreferences);
         loadPreferences(null);
+
+        RandomSelector.INSTANCE.addListener(this::nextPrize);
     }
 
     public void loadPreferences(PreferenceChangeEvent e) {
@@ -48,11 +54,6 @@ public class LotteryPanel extends JPanel {
         nextButton.setEnabled(RandomSelector.INSTANCE.hasNext());
     }
 
-    public void exit(ActionEvent ignored) {
-        // TODO: Save Changes
-        System.exit(0);
-    }
-
     private String winner = "";
 
     public void next(ActionEvent ignored) {
@@ -63,6 +64,11 @@ public class LotteryPanel extends JPanel {
 
     public void withdraw(ActionEvent ignored) {
         RandomSelector.INSTANCE.add(winner);
+        nextButton.setEnabled(RandomSelector.INSTANCE.hasNext());
+        withdrawButton.setEnabled(false);
+    }
+
+    public void nextPrize(ChangeEvent ignored) {
         nextButton.setEnabled(RandomSelector.INSTANCE.hasNext());
         withdrawButton.setEnabled(false);
     }

@@ -1,10 +1,11 @@
-package io.github.apollozhu.lottery
+package io.github.apollozhu.lottery.utils
 
+import io.github.apollozhu.lottery.settings.LotteryPreferences
 import java.io.File
 import javax.sound.sampled.AudioSystem
 import javax.sound.sampled.Clip
 
-object Player {
+object BackgroundMusicPlayer {
     init {
         LotteryPreferences.addListener { play() }
         play()

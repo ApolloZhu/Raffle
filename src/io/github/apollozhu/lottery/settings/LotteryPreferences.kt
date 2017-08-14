@@ -1,6 +1,6 @@
-package io.github.apollozhu.lottery
+package io.github.apollozhu.lottery.settings
 
-import io.github.apollozhu.lottery.LotteryPreferences.forEachListener
+import io.github.apollozhu.lottery.settings.LotteryPreferences.forEachListener
 import io.github.apollozhu.util.AZListenable
 import java.awt.Color
 import java.util.prefs.PreferenceChangeListener
@@ -11,7 +11,7 @@ object LotteryPreferences : AZListenable<PreferenceChangeListener> {
     private val preferences = Preferences.userNodeForPackage(javaClass)
 
     private val list = EventListenerList()
-    override fun getListenerList() = list;
+    override fun getListenerList() = list
     internal fun fireUpdate() = forEachListener { it.preferenceChange(null) }
 
     var title: String

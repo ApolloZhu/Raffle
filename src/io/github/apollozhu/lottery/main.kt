@@ -1,5 +1,8 @@
 package io.github.apollozhu.lottery
 
+import io.github.apollozhu.lottery.settings.LotteryPreferences
+import io.github.apollozhu.lottery.settings.LotterySettingsPanel
+import io.github.apollozhu.lottery.utils.BackgroundMusicPlayer
 import java.awt.Color
 import java.awt.Container
 import java.awt.GraphicsEnvironment
@@ -9,10 +12,12 @@ import javax.swing.JTabbedPane
 
 fun main(args: Array<String>) {
     val tabbedPane = JTabbedPane()
+
     val lotteryPanel = LotteryPanel()
     tabbedPane.addTab("抽奖", lotteryPanel)
     LotteryPreferences.addListener { setBackgroundRecursively(container = lotteryPanel) }
     setBackgroundRecursively(container = lotteryPanel)
+
     val settingsPanel = LotterySettingsPanel()
     tabbedPane.addTab("设置", settingsPanel)
     tabbedPane.selectedIndex = 1
@@ -25,7 +30,7 @@ fun main(args: Array<String>) {
     frame.background = LotteryPreferences.backgroundColor
     frame.isVisible = true
 
-    Player.play(/*"/Users/Apollonian/Music/Music Converter/m.wav"*/)
+    BackgroundMusicPlayer.play(/*"/Users/Apollonian/Music/Music Converter/m.wav"*/)
 }
 
 fun setBackgroundRecursively(color: Color = LotteryPreferences.backgroundColor, container: Container) {
