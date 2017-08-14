@@ -22,6 +22,8 @@ class LotteryBasicSettingsPanel : JPanel() {
     private val backgroundColorButton = AZJButton()
 
     private val listButton = AZJButton()
+    private val winnerSizeTextField = JTextField()
+    private val winnerColorButton = AZJButton()
 
     init {
         layout = BorderLayout()
@@ -84,23 +86,28 @@ class LotteryBasicSettingsPanel : JPanel() {
         }
         uiSettingsPanel.add(backgroundColorButton)
 
-        SpringUtilities.makeCompactGrid(uiSettingsPanel, 3, 6, 8, 8, 8, 8)
-
-        val candidateListPanel = JPanel()
-        add(candidateListPanel, BorderLayout.SOUTH)
-        candidateListPanel.layout = SpringLayout()
-        label = JLabel("人员名单", SwingConstants.RIGHT)
-        candidateListPanel.add(label)
+        uiSettingsPanel.layout = SpringLayout()
+        label = JLabel("可中奖者名单", SwingConstants.RIGHT)
+        uiSettingsPanel.add(label)
         listButton.addActionListener {
             val chooser = JFileChooser(listButton.text)
-            chooser.dialogTitle = "选择人员名单"
+            chooser.dialogTitle = "选择可中奖者名单"
             chooser.dialogType = JFileChooser.FILES_ONLY
             when (chooser.showOpenDialog(this)) {
                 JFileChooser.APPROVE_OPTION -> listButton.text = chooser.selectedFile.path
             }
         }
-        candidateListPanel.add(listButton)
-        SpringUtilities.makeCompactGrid(candidateListPanel, 1, 2, 8, 8, 8, 8)
+        uiSettingsPanel.add(listButton)
+        label = JLabel("大小", SwingConstants.RIGHT)
+        uiSettingsPanel.add(label)
+        uiSettingsPanel.add(winnerSizeTextField)
+        label = JLabel("颜色", SwingConstants.RIGHT)
+        uiSettingsPanel.add(label)
+        winnerColorButton.addActionListener {
+            winnerColorButton.background = JColorChooser.showDialog(this, "选择中奖者的颜色", winnerColorButton.background) ?: winnerColorButton.background
+        }
+        uiSettingsPanel.add(winnerColorButton)
+        SpringUtilities.makeCompactGrid(uiSettingsPanel, 4, 6, 8, 8, 8, 8)
 
         loadPreferences()
     }
@@ -119,6 +126,8 @@ class LotteryBasicSettingsPanel : JPanel() {
         backgroundColorButton.background = LotteryPreferences.backgroundColor
 
         listButton.text = LotteryPreferences.listPath
+        winnerSizeTextField.text = "${LotteryPreferences.winnerSize}"
+        winnerColorButton.background = LotteryPreferences.winnerColor
     }
 
     fun savePreferences() {
@@ -135,6 +144,8 @@ class LotteryBasicSettingsPanel : JPanel() {
         LotteryPreferences.backgroundColor = backgroundColorButton.background
 
         LotteryPreferences.listPath = listButton.text
+        LotteryPreferences.winnerSize = winnerSizeTextField.text.toFloatOrNull() ?: LotteryPreferences.winnerSize
+        LotteryPreferences.winnerColor = winnerColorButton.background
 
         LotteryPreferences.fireUpdate()
     }

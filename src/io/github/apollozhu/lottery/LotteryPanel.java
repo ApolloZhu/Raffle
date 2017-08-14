@@ -1,5 +1,6 @@
 package io.github.apollozhu.lottery;
 
+import io.github.apollozhu.lottery.prize.LotteryPrizeModel;
 import io.github.apollozhu.lottery.settings.LotteryPreferences;
 import io.github.apollozhu.lottery.utils.RandomSelector;
 
@@ -13,8 +14,10 @@ public class LotteryPanel extends JPanel {
 
     private JLabel title = new JLabel("", SwingConstants.CENTER);
     private JLabel subtitle = new JLabel("", SwingConstants.CENTER);
+    private JComboBox<LotteryPrizeModel> box = new JComboBox();
     private JButton withdrawButton = new JButton("放弃");
     private JButton nextButton = new JButton("抽奖");
+    private JLabel winnerLabel = new JLabel();
 
     public LotteryPanel() {
         setLayout(new BorderLayout());
@@ -25,8 +28,17 @@ public class LotteryPanel extends JPanel {
         nPanel.add(title);
         nPanel.add(subtitle);
 
+        JPanel cPanel = new JPanel();
+        add(cPanel, BorderLayout.CENTER);
+        cPanel.add(winnerLabel);
+
         JPanel sPanel = new JPanel();
         add(sPanel, BorderLayout.SOUTH);
+
+        sPanel.add(box);
+        box.addActionListener(l -> {
+            load((LotteryPrizeModel) box.getSelectedItem());
+        });
 
         withdrawButton.addActionListener(this::withdraw);
         withdrawButton.setEnabled(false);
@@ -38,7 +50,7 @@ public class LotteryPanel extends JPanel {
         LotteryPreferences.INSTANCE.addListener(this::loadPreferences);
         loadPreferences(null);
 
-        RandomSelector.INSTANCE.addListener(this::nextPrize);
+        RandomSelector.INSTANCE.addListener(this::reloadCandidateList);
     }
 
     public void loadPreferences(PreferenceChangeEvent e) {
@@ -51,25 +63,49 @@ public class LotteryPanel extends JPanel {
         subtitle.setForeground(LotteryPreferences.INSTANCE.getSubtitleColor());
         subtitle.setVisible(!subtitle.getText().isEmpty());
 
+        winnerLabel.setFont(winnerLabel.getFont().deriveFont(Font.BOLD, LotteryPreferences.INSTANCE.getWinnerSize()));
+        winnerLabel.setForeground(LotteryPreferences.INSTANCE.getWinnerColor());
+
         nextButton.setEnabled(RandomSelector.INSTANCE.hasNext());
+
+        box.removeAllItems();
+        for (LotteryPrizeModel model : LotteryPreferences.INSTANCE.getPrizes()) {
+            box.addItem(model);
+        }
     }
 
     private String winner = "";
+    private LotteryPrizeModel prizeModel;
+    private int total, left;
+
+    public void load(LotteryPrizeModel model) {
+        prizeModel = model;
+        total = model.getCount();
+        left = total;
+        winner = "";
+        reloadCandidateList(null);
+    }
+
+    public void reloadCandidateList(ChangeEvent ignored) {
+        stateDidChange(false);
+    }
 
     public void next(ActionEvent ignored) {
+        left--;
         winner = RandomSelector.INSTANCE.next();
-        nextButton.setEnabled(RandomSelector.INSTANCE.hasNext());
-        withdrawButton.setEnabled(true);
+        winnerLabel.setText("恭喜： " + winner);
+        stateDidChange(true);
     }
 
     public void withdraw(ActionEvent ignored) {
+        left++;
         RandomSelector.INSTANCE.add(winner);
-        nextButton.setEnabled(RandomSelector.INSTANCE.hasNext());
-        withdrawButton.setEnabled(false);
+        winnerLabel.setText(winner + " 放弃领奖");
+        stateDidChange(false);
     }
 
-    public void nextPrize(ChangeEvent ignored) {
-        nextButton.setEnabled(RandomSelector.INSTANCE.hasNext());
-        withdrawButton.setEnabled(false);
+    private void stateDidChange(boolean isWithdrawButtonEnabled) {
+        nextButton.setEnabled(RandomSelector.INSTANCE.hasNext() && left > 0);
+        withdrawButton.setEnabled(isWithdrawButtonEnabled);
     }
 }

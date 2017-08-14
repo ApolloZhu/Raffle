@@ -1,5 +1,6 @@
 package io.github.apollozhu.lottery.settings
 
+import io.github.apollozhu.lottery.prize.LotteryPrizeModel
 import io.github.apollozhu.lottery.settings.LotteryPreferences.forEachListener
 import io.github.apollozhu.util.AZListenable
 import java.awt.Color
@@ -62,7 +63,17 @@ object LotteryPreferences : AZListenable<PreferenceChangeListener> {
     var listPath: String
         get() {
             val listPath = preferences.get("listPath", "")
-            return if (listPath.isBlank()) "选择人员名单" else listPath
+            return if (listPath.isBlank()) "选择可中奖者名单" else listPath
         }
         set(value) = preferences.put("listPath", value)
+
+    var winnerSize: Float
+        get() = preferences.getFloat("winnerSize", 80f)
+        set(value) = preferences.putFloat("winnerSize", value)
+
+    var winnerColor: Color
+        get() = Color(preferences.getInt("winnerColor", 0XFFFF00))
+        set(value) = preferences.putInt("winnerColor", value.rgb)
+
+    var prizes: Array<LotteryPrizeModel> = arrayOf()
 }

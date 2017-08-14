@@ -72,6 +72,7 @@ class LotteryPrizeManagerPanel : JPanel() {
         label.text = "奖项设置 ${curIndex + 1}/${panelList.size} ${if (prizeName.isBlank()) "" else " - $prizeName"}"
     }
 
+    // FIXME: Not human friendly
     private fun addPrize(ignored: ActionEvent? = null) {
         val newPanel = LotteryPrizePanel(nextId++.toString() + "")
         panelList.add(curIndex, newPanel)
@@ -86,6 +87,7 @@ class LotteryPrizeManagerPanel : JPanel() {
         return panelList.size > 1
     }
 
+    // FIXME: Not human friendly
     private fun removePrize(ignored: ActionEvent? = null) {
         if (curIndex == panelList.size - 1) {
             cardLayout.show(panelsContainer, panelList[--curIndex].identifier)
@@ -95,8 +97,8 @@ class LotteryPrizeManagerPanel : JPanel() {
         indexShifted()
     }
 
-    val prizes: Array<LotteryPrizeModel?>
+    val prizes: Array<LotteryPrizeModel>
         get() = panelList.map { it.model }
                 .filter { it != null }
-                .toTypedArray()
+                .toTypedArray() as Array<LotteryPrizeModel>
 }

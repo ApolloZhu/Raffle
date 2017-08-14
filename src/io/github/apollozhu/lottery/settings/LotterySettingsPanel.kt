@@ -15,6 +15,9 @@ class LotterySettingsPanel : JPanel() {
 
     override fun setVisible(aFlag: Boolean) {
         super.setVisible(aFlag)
-        if (aFlag) basic.loadPreferences() else basic.savePreferences()
+        if (aFlag) basic.loadPreferences() else {
+            basic.savePreferences()
+            LotteryPreferences.prizes = prize.prizes
+        }
     }
 }
