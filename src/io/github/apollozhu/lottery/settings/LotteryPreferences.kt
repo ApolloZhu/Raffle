@@ -13,10 +13,7 @@ object LotteryPreferences : AZListenable<PreferenceChangeListener> {
 
     private val list = EventListenerList()
     override fun getListenerList() = list
-    internal fun fireUpdate() {
-        forEachListener { it.preferenceChange(null) }
-        println(prizes)
-    }
+    internal fun fireUpdate() = forEachListener { it.preferenceChange(null) }
 
     var title: String
         get() {

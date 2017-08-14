@@ -65,7 +65,6 @@ public class LotteryPanel extends JPanel {
         center.setBackground(LotteryPreferences.INSTANCE.getBackgroundColor());
 
         box.removeAllItems();
-        System.out.println(LotteryPreferences.INSTANCE.getPrizes().length);
         for (LotteryPrizeModel model : LotteryPreferences.INSTANCE.getPrizes()) {
             box.addItem(model);
         }
