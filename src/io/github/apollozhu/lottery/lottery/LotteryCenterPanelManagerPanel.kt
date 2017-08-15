@@ -4,9 +4,10 @@ import io.github.apollozhu.lottery.prize.LotteryPrizeDisplayTextOnlyPanel
 import io.github.apollozhu.lottery.prize.LotteryPrizeDisplayWithImagePanel
 import io.github.apollozhu.lottery.prize.LotteryPrizeModel
 import java.awt.CardLayout
+import java.awt.event.MouseListener
 import javax.swing.JPanel
 
-class LotteryCenterPanelManagerPanel : JPanel() {
+class LotteryCenterPanelManagerPanel(clickListener: MouseListener) : JPanel() {
     private val cardLayout = CardLayout()
 
     private val placeholder = LotteryCenterPanel()
@@ -20,6 +21,7 @@ class LotteryCenterPanelManagerPanel : JPanel() {
         add(roller, "roller")
         add(displayWithImage, "displayWithImage")
         add(displayTextOnly, "displayTextOnly")
+        addMouseListener(clickListener)
     }
 
     fun showPlaceHodler() = cardLayout.show(this, "placeholder")

@@ -2,10 +2,14 @@ package io.github.apollozhu.lottery.lottery
 
 import io.github.apollozhu.lottery.prize.LotteryPrizeModel
 import io.github.apollozhu.lottery.settings.LotteryPreferences
+import io.github.apollozhu.lottery.tabbedPane
 import io.github.apollozhu.lottery.utils.PreferenceLoading
 import io.github.apollozhu.lottery.utils.RandomSelector
 import java.awt.BorderLayout
+import java.awt.Color
 import java.awt.GridLayout
+import java.awt.event.MouseAdapter
+import java.awt.event.MouseEvent
 import java.util.prefs.PreferenceChangeEvent
 import javax.swing.*
 
@@ -13,10 +17,15 @@ class LotteryPanel : JPanel(), PreferenceLoading {
 
     private val title = JLabel("", SwingConstants.CENTER)
     private val subtitle = JLabel("", SwingConstants.CENTER)
-    private val box = JComboBox<LotteryPrizeModel>()
+    private val box = object : JComboBox<LotteryPrizeModel>() {
+        override fun setBackground(bg: Color?) {}
+    }
     private val withdrawButton = JButton("放弃")
     private val nextButton = JButton("抽奖")
-    private val centerPanels = LotteryCenterPanelManagerPanel()
+    private val settingsButton = JButton("设置")
+    private val centerPanels = LotteryCenterPanelManagerPanel(object : MouseAdapter() {
+        override fun mouseClicked(e: MouseEvent) = next()
+    })
 
     init {
         layout = BorderLayout()
@@ -43,6 +52,9 @@ class LotteryPanel : JPanel(), PreferenceLoading {
 
         nextButton.addActionListener { next() }
         sPanel.add(nextButton)
+
+        settingsButton.addActionListener { tabbedPane.selectedIndex = 1 }
+        sPanel.add(settingsButton)
 
         LotteryPreferences.addListener { loadPreferences() }
         loadPreferences()
@@ -87,7 +99,7 @@ class LotteryPanel : JPanel(), PreferenceLoading {
     private var isWaiting: Boolean = false
 
     fun next() {
-        if (!hasNext() || prizeModel == null) return
+        if (!hasNext()) return
         if (isWaiting) {
             isWaiting = false
             left--
@@ -109,7 +121,7 @@ class LotteryPanel : JPanel(), PreferenceLoading {
     }
 
     operator fun hasNext(): Boolean {
-        return RandomSelector.hasNext() && left > 0
+        return prizeModel != null && RandomSelector.hasNext() && left > 0
     }
 
     private fun stateDidChange(isWithdrawButtonEnabled: Boolean) {

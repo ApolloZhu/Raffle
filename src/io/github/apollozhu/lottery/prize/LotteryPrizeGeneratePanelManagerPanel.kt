@@ -1,5 +1,6 @@
 package io.github.apollozhu.lottery.prize
 
+import io.github.apollozhu.lottery.tabbedPane
 import java.awt.BorderLayout
 import java.awt.CardLayout
 import java.awt.Font
@@ -19,6 +20,7 @@ class LotteryPrizeGeneratePanelManagerPanel : JPanel() {
     private val deleteButton = JButton("删除")
     private val previousButton = JButton("上一个")
     private val nextButton = JButton("下一个")
+    private val doneButton = JButton("完成")
 
     init {
         layout = BorderLayout()
@@ -50,6 +52,11 @@ class LotteryPrizeGeneratePanelManagerPanel : JPanel() {
         nextButton.addActionListener {
             curIndex++
             indexShifted()
+        }
+
+        controls.add(doneButton)
+        doneButton.addActionListener {
+            tabbedPane.selectedIndex = 0
         }
     }
 
